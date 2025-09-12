@@ -46,11 +46,15 @@ def add_product(products, name, desc, price, quantity):
         
     return products
 
+def list_products (products):
+    for idx, product in enumerate(products, 1):
+        print(f"{idx}. {product['name']} - {format_currency(product['price'])} - {product['quantity']} st")
 
-def product_search(products, id):
+
+def view_product(products, idx):
     for product in products:
-        if product['id'] == id:
-            return product['name']
+        if product['id'] == idx - 1:
+            return product['name'], product["price"]
 
 def product_remove(products, id):
     for product in products:
@@ -68,12 +72,15 @@ locale.setlocale(locale.LC_ALL, 'sv_SE.UTF-8')
 
 products = load_data('db_products.csv')
 
-print(product_search(products, 2))
 
 product_remove(products, 3)
 
 add_product(products, "teslacar", "a transport veichle to move around city", 300000, 5)
 
-for idx, product in enumerate(products, 1):
-    print(f"{idx}. {product['name']} - {format_currency(product['price'])} - {product['quantity']} st")
-
+while True:
+    list_products(products)
+    idx = int(input("välj produkt: "))
+    
+    product = view_product(products,idx)
+    print(f"the product is {product[0]} and costs {product[1]}")
+    input ("")
