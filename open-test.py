@@ -72,6 +72,14 @@ def product_remove(products, id):
         if product['id'] == id - 1:
             products.remove(product)
 
+def count_stats(products):
+    total_value = 0
+    for product in products:
+        total_value += product['price'] * product['quantity']
+        print (f"{product["name"]} --> {product["price"]} * {product['quantity']} = {product["price"] * product['quantity']}")
+        print(f"den totala prisen nu är {total_value}")
+    return total_value
+
 #TODO: hur gör man så funktionen load_data returnerar products istället?
 #TODO: gör så man kan se en numrerad lista som börjar på 1.
 #TODO: skriv en funktion som returnerar en specifik produkt med hjälp av id
@@ -84,13 +92,17 @@ locale.setlocale(locale.LC_ALL, 'sv_SE.UTF-8')
 products = load_data('db_products.csv')
 
 
-product_remove(products, 3)
-
-add_product(products, "teslacar", "a transport veichle to move around city", 300000, 5)
-
 while True:
-    choice = int(input("Välj vad du vill göra \n1 : hitta ett produkt; 2 : skriv ut alla produkter; 3 : lägga till produkt; 4 : ta bort produkt; 5 : ändra produkt; 6 : se statistik "))
+    choice = int(input("""Välj vad du vill göra:
+1 : Hitta en produkt
+2 : Skriv ut alla produkter
+3 : Lägg till produkt
+4 : Ta bort produkt
+5 : Ändra produkt
+6 : Se statistik
+> """))
     if choice == 1 :
+        list_products(products)
         idx = int(input("välj produkt: "))
         product = view_product(products,idx)
         print(f"the product is {product[0]} and costs {product[1]}")
@@ -118,3 +130,7 @@ while True:
         quantity = int(input("skriv mängden av ändrad produkt det finns/ska finnas annars skriv - "))
         change_product(products, idx, namn, price, desc, quantity )
         list_products(products)
+        
+    elif choice == 6:
+        print(f"Den totala prisen av alla produkter i lagern är {count_stats(products)}")
+        
